@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC1091,SC2086
+# shellcheck disable=SC1091,SC2086,SC2154
 #  PURPOSE: A QnD scipt to build new macOS systems in VMware Fusion with packer.
 #           This is where https://github.com/todd-dsm/mac-ops gets tested.
 # -----------------------------------------------------------------------------
-#  PREREQS: a) A current version of VMware Fusion
-#           b)
+#  PREREQS: a) Hardware that supports virtualization
+#           b) Download macOS source from The App Store
+#           c) A current version of VMware Fusion
 # -----------------------------------------------------------------------------
 #  EXECUTE:
 # -----------------------------------------------------------------------------
@@ -22,6 +23,7 @@ set -x
 ###----------------------------------------------------------------------------
 ### Variables
 ###----------------------------------------------------------------------------
+# Pull in Variable common to both scripts
 source vars-build
 ###----------------------------------------------------------------------------
 declare statusCount='0'
@@ -29,8 +31,6 @@ declare statusCount='0'
 declare packerFile='macos-sierra-10.12.json'
 declare vmDir="$VMWARE_STORAGE/osx/sierra"
 declare vagrantBox="$HOME/vms/vagrant/boxes/mac_osx/sierra.box"
-declare isoDir="$HOME/Downloads/isos/osx"
-declare osxISO='OSX_InstallESD_10.12.3_16D32.dmg'
 declare isoURL="$isoDir/$osxISO"
 declare defsValBld="-only=vmware-iso -var iso_url=$isoURL $packerFile"
 # Packer may grow to include more testing in the future; form the arrays:

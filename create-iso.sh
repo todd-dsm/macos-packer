@@ -24,8 +24,6 @@
 ### VARIABLES
 ###----------------------------------------------------------------------------
 # ENV Stuff
-declare inst_source='/Applications/Install macOS Sierra.app'
-declare isoDir="$HOME/Downloads/isos/osx"
 declare -a buildDirs=("$inst_source" "$isoDir")
 # Data Files
 
