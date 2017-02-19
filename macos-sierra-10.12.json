@@ -1,0 +1,113 @@
+{
+  "builders": [
+    {
+      "boot_wait": "2s",
+      "disk_size": 40960,
+      "vm_name": "osx_10.12_sierra",
+      "guest_os_type": "darwin12-64",
+      "iso_url": "{{user `iso_url`}}",
+      "shutdown_command": "echo '{{user `username`}}'|sudo -S shutdown -h now",
+      "skip_compaction": true,
+      "ssh_port": 22,
+      "ssh_username": "{{user `username`}}",
+      "ssh_password": "{{user `password`}}",
+      "ssh_wait_timeout": "10000s",
+      "tools_upload_flavor": "darwin",
+      "output_directory": "{{user `vmware_storage`}}/osx/sierra",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "headless": "TRUE",
+      "type": "vmware-iso",
+      "vmx_data": {
+				"annotation": "macOS 10.12; no updates, no tools",
+        "cpuid.coresPerSocket": "1",
+        "memsize": "2048",
+        "numvcpus": "2",
+        "hypervisor.cpuid.v0": "TRUE",
+        "mce.enable": "TRUE",
+        "vhv.enable": "TRUE",
+        "firmware": "efi",
+        "keyboardAndMouseProfile": "macProfile",
+        "smc.present": "TRUE",
+        "hpet0.present": "TRUE",
+        "ich7m.present": "TRUE",
+        "ehci.present": "TRUE",
+        "usb.present": "TRUE",
+        "remotedisplay.vnc.enabled": "FALSE"
+      },
+      "vmx_data_post":{
+        "ethernet0.connectionType": "bridged",
+        "ethernet0.linkstatepropagation.enable": "TRUE",
+        "ethernet0.generatedAddressOffset": "0",
+        "ethernet0.generatedAddress": "00:0c:29:56:a1:41",
+        "chipset.useAcpiBattery": "TRUE",
+        "chipset.useApmBattery": "TRUE"
+      }
+    }
+  ],
+  "min_packer_version": "0.7.0",
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "{{user `box_dir`}}/mac_osx/sierra.box",
+      "keep_input_artifact": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell-local",
+      "command": "sleep {{user `provisioning_delay`}}"
+    },
+    {
+      "destination": "/private/tmp/set_kcpassword.py",
+      "source": "scripts/support/set_kcpassword.py",
+      "type": "file"
+    },
+    {
+      "execute_command": "chmod +x {{ .Path }}; sudo {{ .Vars }} {{ .Path }}",
+      "scripts": [
+        "scripts/vagrant.sh",
+        "scripts/vmware.sh",
+        "scripts/xcode-cli-tools.sh",
+        "scripts/add-network-interface-detection.sh",
+        "scripts/autologin.sh",
+        "scripts/system-update.sh",
+        "scripts/shrink.sh"
+      ],
+      "environment_vars": [
+        "AUTOLOGIN={{user `autologin`}}",
+        "CHEF_VERSION={{user `chef_version`}}",
+        "FACTER_VERSION={{user `facter_version`}}",
+        "HIERA_VERSION={{user `hiera_version`}}",
+        "INSTALL_VAGRANT_KEYS={{user `install_vagrant_keys`}}",
+        "NOCM={{user `nocm`}}",
+        "INSTALL_XCODE_CLI_TOOLS={{user `install_xcode_cli_tools`}}",
+        "PASSWORD={{user `password`}}",
+        "PUPPET_VERSION={{user `puppet_version`}}",
+        "PUPPET_AGENT_VERSION={{user `puppet_agent_version`}}",
+        "UPDATE_SYSTEM={{user `update_system`}}",
+        "USERNAME={{user `username`}}"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "autologin": "false",
+    "chef_version": "none",
+    "facter_version": "none",
+    "hiera_version": "none",
+    "install_vagrant_keys": "true",
+    "install_xcode_cli_tools": "true",
+    "update_system": "true",
+    "iso_url": "OSX_InstallESD_10.12_16A323.dmg",
+    "password": "vagrant",
+    "provisioning_delay": "0",
+    "puppet_version": "none",
+    "puppet_agent_version": "none",
+    "iso_checksum": "25235d37a35897296a56ea1bc227cd9f",
+    "iso_checksum_type": "MD5",
+    "vmware_storage": "{{env `VMWARE_STORAGE`}}",
+    "box_dir":        "{{env `VAGRANT_BOXES`}}",
+    "username": "vagrant"
+  }
+}
