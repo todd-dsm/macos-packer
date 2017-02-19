@@ -118,7 +118,9 @@ Now login to the VM:
 
 `ssh vagrant@macos`
 
-Prep this VM in any other way you need to. For example, I copy some test ssh keys to this system so I can access github repos via ssh.
+Prep this VM in any other way you need to. For example, I copy some test ssh keys to this system so I can access github repos via ssh:
+
+`scp ~/.ssh/test-keys* vagrant@macos:.ssh/`
 
 After the prep work, shut down the VM and snapshot it. Call it 'fresh' or something.
 
