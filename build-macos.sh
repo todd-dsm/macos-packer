@@ -31,7 +31,6 @@ declare statusCount='0'
 declare packerFile='macos-sierra-10.12.json'
 declare vmDir="$VMWARE_STORAGE/osx/sierra"
 declare vagrantBox="$HOME/vms/vagrant/boxes/mac_osx/sierra.box"
-declare isoURL="$isoDir/$osxISO"
 declare defsValBld="-only=vmware-iso -var iso_url=$isoURL $packerFile"
 # Packer may grow to include more testing in the future; form the arrays:
 declare -A pSubsActions;                declare -a subCMDs;

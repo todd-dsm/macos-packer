@@ -30,9 +30,9 @@ export VAGRANT_DEFAULT_PROVIDER='virtualbox'
 export ANSIBLE_CONFIG="$HOME/.ansible"
 
 ###############################################################################
-###                               script vars                               ###
+###                               common vars                               ###
 ###############################################################################
 export inst_source='/Applications/Install macOS Sierra.app'
 export isoDir="$HOME/Downloads/isos/osx"
 export osxISO='OSX_InstallESD_10.12.3_16D32.dmg'
-
+export isoURL="$isoDir/$osxISO"
